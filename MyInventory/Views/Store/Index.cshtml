@@ -1,0 +1,63 @@
+﻿@model MyInventory.Models.StoreViewModel
+@inject MyInventory.Data.ApplicationDbContext _context
+
+@{
+	ViewData["Title"] = "My Store";
+}
+<div class="container">
+	<div class="row">
+		<div class="col-xl-3">
+			<div class="card">
+				<div class="list-group">
+					<a href="~/Store"
+					   class="list-group-item active d-flex justify-content-between align-items-center"
+					   style="text-decoration: none;"
+					   aria-current="true">
+						All Categories
+						<span class="badge badge-info badge-pill">
+							@Model.ProductList.Count
+						</span>
+					</a>
+					@foreach (var item in Model.CategoryList)
+					{
+						var totalRecords = _context.Products
+							.Where(p => p.CatId == item.CatId)
+							.ToList().Count;
+						<a href="~/Store?c=@item.CatId"
+						   class="list-group-item d-flex justify-content-between align-items-center"
+						   style="text-decoration: none;">
+							@item.Name
+							<span class="badge badge-info badge-pill">
+								@totalRecords
+							</span>
+						</a>
+					}
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-9">
+			<div class="row">
+				@foreach (var item in Model.ProductList.OrderBy(p => p.Price).ToList())
+				{
+					<div class="col-4">
+						<div class="card">
+							<img src="~/img/products/@(item.ImagePath)"
+								 class="card-img-top"
+								 alt="@(item.Name)"
+								 style="height:200px;object-fit:cover;object-position:center;"/>
+							<div class="card-body">
+								<h5 class="card-title">@(item.Name)</h5>
+								<p class="card-text">@(item.Category.Name)</p>
+								<p class="card-text">Php@(item.Price.ToString("N"))</p>
+								<a href="@(Url.Action("Detail", "Store", new { id = item.ProductId}))"
+								   class="btn btn-primary">See Details</a>
+							</div>
+						</div>
+						<br /><br />
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+
+</div>

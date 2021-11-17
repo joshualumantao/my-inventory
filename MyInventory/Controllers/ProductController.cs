@@ -54,12 +54,11 @@ namespace MyInventory.Controllers
                 if (imagePath.Length > 0)
                 {
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(),
-                        "wwroot/image/products", imagePath.FileName);
+                        "wwwroot/img/products", imagePath.FileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create)) 
                     {
                         imagePath.CopyTo(stream);
-
                     }
                     product.ImagePath = imagePath.FileName;
                 }
