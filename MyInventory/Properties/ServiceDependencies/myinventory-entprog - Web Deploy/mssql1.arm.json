@@ -36,7 +36,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('MyInventory_db', subscription().subscriptionId)))]",
+      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat('InventoryDB', subscription().subscriptionId)))]",
       "resourceGroup": "[parameters('resourceGroupName')]",
       "apiVersion": "2019-10-01",
       "dependsOn": [
@@ -51,23 +51,24 @@
             {
               "kind": "v12.0",
               "location": "[parameters('resourceLocation')]",
-              "name": "myinventorydbserver",
+              "name": "entprog-invserver",
               "type": "Microsoft.Sql/servers",
               "apiVersion": "2017-10-01-preview"
             },
             {
               "sku": {
-                "name": "Standard",
-                "tier": "Standard",
-                "capacity": 10
+                "name": "GP_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 2
               },
-              "kind": "v12.0,user",
+              "kind": "v12.0,user,vcore",
               "location": "[parameters('resourceLocation')]",
-              "name": "myinventorydbserver/MyInventory_db",
+              "name": "entprog-invserver/InventoryDB",
               "type": "Microsoft.Sql/servers/databases",
               "apiVersion": "2017-10-01-preview",
               "dependsOn": [
-                "myinventorydbserver"
+                "entprog-invserver"
               ]
             }
           ]
